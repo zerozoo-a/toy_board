@@ -1,6 +1,7 @@
 import { HttpException, Injectable, Post } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { SignUpUserDto } from 'src/auth/dto/signup-user.dto';
+import { AlreadyUsedEmailException } from 'src/lib/exceptions/alreadyUsedEmail.exception';
 import { Repository } from 'typeorm';
 import { SaveUserDto } from './dto/save-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -16,10 +17,7 @@ export class UserService {
   async save(signUpUserDto: SignUpUserDto) {
     const res = await this.findOne(signUpUserDto.email);
     if (res !== null) {
-      throw new HttpException(
-        'this email is already used sorry try another email account',
-        405,
-      );
+      throw new AlreadyUsedEmailException();
     }
 
     return this.userRepository.save(signUpUserDto);

@@ -17,12 +17,6 @@ export class AuthService {
 
   @Post('signup')
   async signup(@Body() signUpUserDto: SignUpUserDto) {
-    const isAlreadyUser: User = await this.validateSignup(signUpUserDto.email);
-
-    if (isAlreadyUser !== null) {
-      return 'this email address is already used';
-    }
-
     return this.userService.save(signUpUserDto);
   }
 
