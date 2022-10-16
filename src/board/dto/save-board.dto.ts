@@ -13,6 +13,9 @@ export class SaveBoardDto {
   contents: string;
 
   @ApiProperty()
+  at: string;
+
+  @ApiProperty()
   createdAt: Date;
 
   @ApiProperty()

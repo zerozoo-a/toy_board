@@ -3,7 +3,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { SignUpUserDto } from 'src/auth/dto/signup-user.dto';
 import { AlreadyUsedEmailException } from 'src/lib/exceptions/alreadyUsedEmail.exception';
 import { Repository } from 'typeorm';
-import { SaveUserDto } from './dto/save-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
 

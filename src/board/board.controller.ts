@@ -10,7 +10,7 @@ import {
 import { BoardService } from './board.service';
 import { SaveBoardDto } from './dto/save-board.dto';
 import { UpdateBoardDto } from './dto/update-board.dto';
-// import {Board}
+import { AuthService } from 'src/auth/auth.service';
 
 @Controller('board')
 export class BoardController {
@@ -18,9 +18,7 @@ export class BoardController {
 
   @Post()
   save(@Body() saveBoardDto: SaveBoardDto) {
-    console.log('saveBoardDto', saveBoardDto);
-    return '';
-    // return this.boardService.save(saveBoardDto);
+    return this.boardService.save(saveBoardDto);
   }
 
   @Get()

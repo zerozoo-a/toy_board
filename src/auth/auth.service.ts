@@ -3,9 +3,7 @@ import { JwtService } from '@nestjs/jwt';
 import { UserService } from 'src/user/user.service';
 import { LoginUserDto } from './dto/login-user.dto';
 import { SignUpUserDto } from './dto/signup-user.dto';
-import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/user/entities/user.entity';
-import { Repository } from 'typeorm';
 
 @Injectable()
 export class AuthService {
@@ -44,5 +42,13 @@ export class AuthService {
     return {
       access_token: this.jwtService.sign(payload),
     };
+  }
+
+  async decodeToken(at: string) {
+    return this.jwtService.decode(at);
+  }
+
+  async verifyToekn(at: string) {
+    return this.jwtService.verify(at);
   }
 }
