@@ -8,8 +8,8 @@ import { User } from 'src/user/entities/user.entity';
 @Injectable()
 export class AuthService {
   constructor(
-    private readonly userService: UserService,
     private readonly jwtService: JwtService,
+    private readonly userService: UserService,
   ) {}
 
   @Post('signup')
@@ -49,6 +49,6 @@ export class AuthService {
   }
 
   async verifyToekn(at: string) {
-    return this.jwtService.verify(at);
+    return this.jwtService.verifyAsync(at);
   }
 }
