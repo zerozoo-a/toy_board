@@ -12,7 +12,6 @@ export class AuthService {
   constructor(
     private readonly userService: UserService,
     private readonly jwtService: JwtService,
-    @InjectRepository(User) private readonly userRepository: Repository<User>,
   ) {}
 
   @Post('signup')
