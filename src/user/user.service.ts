@@ -1,5 +1,6 @@
 import { HttpException, Injectable, Post } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { SignUpUserDto } from 'src/auth/dto/signup-user.dto';
 import { Repository } from 'typeorm';
 import { SaveUserDto } from './dto/save-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -8,12 +9,12 @@ import { User } from './entities/user.entity';
 @Injectable()
 export class UserService {
   constructor(
-    @InjectRepository(User) private userRepository: Repository<User>,
+    @InjectRepository(User) private readonly userRepository: Repository<User>,
   ) {}
 
   @Post()
-  async save(saveUserDto: SaveUserDto) {
-    const res = await this.findOne(saveUserDto.email);
+  async save(signUpUserDto: SignUpUserDto) {
+    const res = await this.findOne(signUpUserDto.email);
     if (res !== null) {
       throw new HttpException(
         'this email is already used sorry try another email account',
@@ -21,14 +22,14 @@ export class UserService {
       );
     }
 
-    return this.userRepository.save(saveUserDto);
+    return this.userRepository.save(signUpUserDto);
   }
 
   findAll() {
     return this.userRepository.find();
   }
 
-  async findOne(email: string): Promise<User | undefined> {
+  async findOne(email: string): Promise<User | null> {
     return this.userRepository.findOneBy({ email });
   }
 

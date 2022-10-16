@@ -12,10 +12,12 @@ async function bootstrap() {
     .setVersion('0.1')
     .addTag('board')
     .build();
-  // app.useGlobalPipes(new ValidationPipe());
   const document = SwaggerModule.createDocument(app, config);
+
+  // swagger api 문서화를 위한 setup
   SwaggerModule.setup('api', app, document);
 
+  // port
   await app.listen(3000);
 }
 bootstrap();
