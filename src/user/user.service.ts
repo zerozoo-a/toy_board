@@ -30,6 +30,14 @@ export class UserService {
     return this.userRepository.findOneBy({ email });
   }
 
+  async findUsersBoards(email: string) {
+    return this.userRepository
+      .createQueryBuilder('user')
+      .leftJoinAndSelect('user.boards', 'board')
+      .where('email = :email', { email })
+      .getMany();
+  }
+
   update(id: number, updateUserDto: UpdateUserDto) {
     return `This action updates a #${id} user`;
   }

@@ -34,9 +34,15 @@ export class UserController {
     return this.userService.findAll();
   }
 
-  @Get(':id')
+  @Get()
   findOne(@Param('email') email: string) {
     return this.userService.findOne(email);
+  }
+
+  @Post('findUsersBoards')
+  findUsersBoards(@Body('email') email: string) {
+    console.log('run?');
+    return this.userService.findUsersBoards(email);
   }
 
   @Patch(':id')
