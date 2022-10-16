@@ -4,19 +4,18 @@ import {
   PrimaryGeneratedColumn,
   OneToMany,
   CreateDateColumn,
+  PrimaryColumn,
 } from 'typeorm';
 import { Board } from 'src/board/entities/board.entity';
 
 @Entity()
 export class User {
-  @PrimaryGeneratedColumn()
-  user_id: number;
+  @Column()
+  @PrimaryColumn()
+  email: string;
 
   @Column()
   name: string;
-
-  @Column()
-  email: string;
 
   @Column()
   password: string;

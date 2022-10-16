@@ -4,6 +4,7 @@ import { UserService } from 'src/user/user.service';
 import { LoginUserDto } from './dto/login-user.dto';
 import { SignUpUserDto } from './dto/signup-user.dto';
 import { User } from 'src/user/entities/user.entity';
+import { TokenExpiredErrorException } from 'src/lib/exceptions/TokenExpiredError.exception';
 
 @Injectable()
 export class AuthService {
@@ -50,5 +51,21 @@ export class AuthService {
 
   async verifyToekn(at: string) {
     return this.jwtService.verifyAsync(at);
+  }
+
+  async verifyUser(at: string): Promise<User> {
+    try {
+      await this.verifyToekn(at);
+      const parsedToken = (await this.decodeToken(at)) as {
+        [key: string]: any;
+        email: string;
+      };
+      return await this.userService.findOne(parsedToken.email);
+    } catch (error) {
+      if (error.name === 'TokenExpiredError') {
+        throw new TokenExpiredErrorException();
+      }
+      throw new Error('Sorry unexpected error is occurred!');
+    }
   }
 }

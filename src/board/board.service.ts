@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { ApiResponse } from '@nestjs/swagger';
 import { InjectRepository } from '@nestjs/typeorm';
 import { AuthService } from 'src/auth/auth.service';
 import { TokenExpiredErrorException } from 'src/lib/exceptions/TokenExpiredError.exception';
@@ -15,38 +16,32 @@ export class BoardService {
     @InjectRepository(Board)
     private readonly boardRepository: Repository<Board>,
     private readonly authService: AuthService,
-    private readonly userService: UserService,
   ) {}
 
+  @ApiResponse({
+    status: 201,
+    description: 'The record has been successfully created.',
+  })
   async save(saveBoardDto: SaveBoardDto) {
     const { name, contents, at } = saveBoardDto;
 
-    try {
-      await this.authService.verifyToekn(at);
-      const userTokenData = (await this.authService.decodeToken(at)) as {
-        [key: string]: any;
-      };
-      const user = await this.userService.findOne(userTokenData.email);
+    const user = await this.authService.verifyUser(at);
 
-      await this.boardRepository
-        .createQueryBuilder()
-        .insert()
-        .into(Board)
-        .values([
-          {
-            name,
-            contents,
-            user,
-          },
-        ])
-        .execute();
-    } catch (error) {
-      if (error.name === 'TokenExpiredError') {
-        throw new TokenExpiredErrorException();
-      }
-      throw new Error('Sorry unexpected error is occurred!');
-    }
-    return 'This action adds a new board';
+    await this.boardRepository
+      .createQueryBuilder()
+      .insert()
+      .into(Board)
+      .values([
+        {
+          name,
+          contents,
+          user,
+        },
+      ])
+      .execute()
+      .catch((error) => {
+        throw new Error('Sorry unexpected error is occurred!' + error);
+      });
   }
 
   findAll() {

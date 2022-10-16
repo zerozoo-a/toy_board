@@ -24,6 +24,6 @@ export class Board {
   @CreateDateColumn()
   updatedAt: Date;
 
-  @ManyToOne((_) => User, (user) => user.boards)
+  @ManyToOne(() => User, (user) => user.boards)
   user: User;
 }
