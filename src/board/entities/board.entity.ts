@@ -7,7 +7,7 @@ import {
   ManyToOne,
 } from 'typeorm';
 
-@Entity()
+@Entity('board')
 export class Board {
   @PrimaryGeneratedColumn()
   board_id: number;

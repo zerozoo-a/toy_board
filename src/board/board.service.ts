@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { ApiResponse } from '@nestjs/swagger';
 import { InjectRepository } from '@nestjs/typeorm';
+import { query } from 'express';
 import { AuthService } from 'src/auth/auth.service';
 import { Repository } from 'typeorm';
 import { SaveBoardDto } from './dto/save-board.dto';
@@ -45,8 +46,16 @@ export class BoardService {
     return this.boardRepository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  async findOne(board_id: number): Promise<Board> {
+    return await this.boardRepository.query(
+      `SELECT * FROM board WHERE board_id = ${board_id}`,
+    );
+  }
+
+  async findUsersBoardBy(userEmail: string): Promise<Board[]> {
+    return await this.boardRepository.query(
+      `SELECT * FROM board WHERE userEmail = "${userEmail}"`,
+    );
   }
 
   update(id: number, updateBoardDto: UpdateBoardDto) {
